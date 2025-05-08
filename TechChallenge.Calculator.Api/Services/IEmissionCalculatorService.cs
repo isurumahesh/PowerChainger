@@ -4,7 +4,8 @@ namespace TechChallenge.Calculator.Api.Services
 {
     public interface IEmissionCalculatorService
     {
-        Task<List<FinalResponse>> CalculateEmissions(int from, int to, List<string> userIds);
+        Task<List<UserEmissionData>> CalculateEmissions(int from, int to, List<string> userIds, CancellationToken cancellationToken);
+        Task<double> CalculateEmissions2(int from, int to, List<string> userIds);
 
         Task<string> TestEmissionApi();
 

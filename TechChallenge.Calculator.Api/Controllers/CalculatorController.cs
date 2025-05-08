@@ -8,16 +8,40 @@ namespace TechChallenge.Calculator.Api.Controllers
     public class CalculatorController(IEmissionCalculatorService emissionCalculatorService) : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] int from, [FromQuery] int to, [FromQuery] List<string> userIds)
+        public async Task<IActionResult> GetTotalEmission([FromQuery] int from, [FromQuery] int to, [FromQuery] List<string> userIds, CancellationToken cancellationToken)
         {
-            var response = await emissionCalculatorService.CalculateEmissions(from, to, userIds);
+            if (from == 0 || to == 0 || !userIds.Any())
+            {
+                return BadRequest();
+            }
+
+            var currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+            if (from > currentTime || to > currentTime || from >= to)
+            {
+                return BadRequest();
+            }
+
+            var response = await emissionCalculatorService.CalculateEmissions(from, to, userIds, cancellationToken);
             return Ok(response);
         }
 
-        [HttpGet("total")]
-        public async Task<IActionResult> GetTotalEmission([FromQuery] int from, [FromQuery] int to, [FromQuery] List<string> userIds)
+        [HttpGet("test2")]
+        public async Task<IActionResult> GetTotalEmission2([FromQuery] int from, [FromQuery] int to, [FromQuery] List<string> userIds)
         {
-            var response = await emissionCalculatorService.CalculateEmissions(from, to, userIds);
+            if (from == 0 || to == 0 || !userIds.Any())
+            {
+                return BadRequest();
+            }
+
+            var currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+            if (from > currentTime || to > currentTime || from >= to)
+            {
+                return BadRequest();
+            }
+
+            var response = await emissionCalculatorService.CalculateEmissions2(from, to, userIds);
             return Ok(response);
         }
 

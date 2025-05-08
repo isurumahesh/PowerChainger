@@ -35,30 +35,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient("EmissionsApi", client =>
 {
     client.BaseAddress = new Uri("https://localhost:44385/");
-    client.DefaultRequestHeaders.Add("Accept", "application/json");
-}).AddTransientHttpErrorPolicy(policy => policy.WaitAndRetryAsync(retryCount: 5,
-        sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(3),
-        onRetry: (outcome, timespan, retryAttempt, context) =>
-        {
-            Log.Warning(
-                "Retry {RetryAttempt} after {Delay}s due to {Exception} or {Result}.",
-                retryAttempt,
-                timespan.TotalSeconds,
-                outcome.Exception?.Message ?? "no exception",
-                outcome.Result?.StatusCode
-            );
-        }));
+}).AddTransientHttpErrorPolicy(policy => policy.WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(3)));
 
 builder.Services.AddHttpClient("MeasurementsApi", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:44309/");
-    client.DefaultRequestHeaders.Add("Accept", "application/json");
+    client.BaseAddress = new Uri("https://localhost:44309/");   
 })
 .AddTransientHttpErrorPolicy(policy =>
-    policy.WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(3))) // Retry policy
+    policy.WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(3))) // Retry policy
 .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(20)); // Timeout policy
 
 builder.Services.AddScoped<IEmissionCalculatorService, EmissionCalculatorService>();
+builder.Services.AddMemoryCache();
+builder.Services.AddSingleton<ICacheService, MemoryCacheService>();
 
 var app = builder.Build();
 
