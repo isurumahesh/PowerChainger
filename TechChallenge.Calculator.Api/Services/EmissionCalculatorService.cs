@@ -69,39 +69,11 @@ namespace TechChallenge.Calculator.Api.Services
 
                         long fromTimeStamp = from;
                         var calculations = new ConcurrentBag<double>();
-                        object lockObj = new object();
-
-                        //Parallel.ForEach(emissionResponse, parallelOptions, a =>
-                        //{
-                        //    long localFromTimeStamp;
-
-                        //    lock (lockObj)
-                        //    {
-                        //        localFromTimeStamp = fromTimeStamp;
-                        //        fromTimeStamp = a.Timestamp;
-                        //    }
-
-                        //    var measurements = concurrentMeasurements.Where(m => m.Timestamp >= localFromTimeStamp && m.Timestamp <= a.Timestamp).ToList();
-                        //    double allWatts = measurements.Sum(a => a.Watts);
-                        //    double denominator = measurements.Count * 4 * 1000;
-                        //    double allWattsInKwh = denominator != 0 ? allWatts / denominator : 0;
-
-                        //    if (allWattsInKwh == 0)
-                        //    {
-                        //        logger.LogInformation($"allWatsInKwh:{allWattsInKwh} allWats:{allWatts} denominator :{denominator}");
-                        //    }
-
-                        //    var result = a.KgPerWattHr * allWattsInKwh;
-                        //    calculations.Add(result);
-                        //});
-
-
-                        foreach (var item in emissionResponse)
-                        {
-                           
-                            long localFromTimeStamp = fromTimeStamp;
-                            fromTimeStamp = item.Timestamp;
-                            var measurements = concurrentMeasurements.Where(m => m.Timestamp >= localFromTimeStamp && m.Timestamp <= item.Timestamp).ToList();
+                        var timeInterval = 900;
+                
+                        Parallel.ForEach(emissionResponse, parallelOptions, a =>
+                        {                           
+                            var measurements = concurrentMeasurements.Where(m => m.Timestamp >= a.Timestamp - timeInterval && m.Timestamp <= a.Timestamp).ToList();
                             double allWatts = measurements.Sum(a => a.Watts);
                             double denominator = measurements.Count * 4 * 1000;
                             double allWattsInKwh = denominator != 0 ? allWatts / denominator : 0;
@@ -111,14 +83,34 @@ namespace TechChallenge.Calculator.Api.Services
                                 logger.LogInformation($"allWatsInKwh:{allWattsInKwh} allWats:{allWatts} denominator :{denominator}");
                             }
 
-                            var result = item.KgPerWattHr * allWattsInKwh;
+                            var result = a.KgPerWattHr * allWattsInKwh;
                             calculations.Add(result);
-                        }
-                        ;
+                        });
+
+
+                        //foreach (var item in emissionResponse)
+                        //{
+
+                        //    long localFromTimeStamp = fromTimeStamp;
+                        //    fromTimeStamp = item.Timestamp;
+                        //    var measurements = concurrentMeasurements.Where(m => m.Timestamp >= localFromTimeStamp && m.Timestamp <= item.Timestamp).ToList();
+                        //    double allWatts = measurements.Sum(a => a.Watts);
+                        //    double denominator = measurements.Count * 4 * 1000;
+                        //    double allWattsInKwh = denominator != 0 ? allWatts / denominator : 0;
+
+                        //    if (allWattsInKwh == 0)
+                        //    {
+                        //        logger.LogInformation($"allWatsInKwh:{allWattsInKwh} allWats:{allWatts} denominator :{denominator}");
+                        //    }
+
+                        //    var result = item.KgPerWattHr * allWattsInKwh;
+                        //    calculations.Add(result);
+                        //}
+                        
 
                         double finalResult = calculations.Sum(a => a);
                         useEmissionsDataLIst.Add(new UserEmissionData(userId, finalResult));
-                        //    cacheService.Set(cacheKey, finalResult, TimeSpan.FromMinutes(CalculatorHelper.CacheDurationInMinutes));
+                        cacheService.Set(cacheKey, finalResult, TimeSpan.FromMinutes(CalculatorHelper.CacheDurationInMinutes));
                     }
                     catch (Exception ex)
                     {

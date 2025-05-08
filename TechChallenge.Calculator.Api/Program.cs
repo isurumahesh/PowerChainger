@@ -34,12 +34,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient("EmissionsApi", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:44385/");
+    client.BaseAddress = new Uri("http://emissions.api:8080/");
 }).AddTransientHttpErrorPolicy(policy => policy.WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(3)));
 
 builder.Services.AddHttpClient("MeasurementsApi", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:44309/");   
+    client.BaseAddress = new Uri("http://measurements.api:8080/");   
 })
 .AddTransientHttpErrorPolicy(policy =>
     policy.WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(3))) // Retry policy
