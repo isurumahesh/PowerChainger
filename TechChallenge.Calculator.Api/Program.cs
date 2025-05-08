@@ -20,18 +20,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.Services.AddHttpClient("EmissionsApi", client =>
-//{
-//    client.BaseAddress = new Uri("http://emissions.api:8080/");
-//    client.DefaultRequestHeaders.Add("Accept", "application/json");
-//}).AddTransientHttpErrorPolicy(policy => policy.WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(3)));
-
-//builder.Services.AddHttpClient("MeasurementsApi", client =>
-//{
-//    client.BaseAddress = new Uri("http://measurements.api:8080/");
-//    client.DefaultRequestHeaders.Add("Accept", "application/json");
-//})
-
 builder.Services.AddHttpClient("EmissionsApi", client =>
 {
     client.BaseAddress = new Uri("http://emissions.api:8080/");
