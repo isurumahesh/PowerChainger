@@ -31,10 +31,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechChallenge.Calculator.Ap
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81DDED9D-158B-E303-5F62-77A2896D2A5A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9901F886-3291-4DBE-B6F4-28A568533235}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechChallenge.UnitTests", "..\TechChallenge.UnitTests\TechChallenge.UnitTests.csproj", "{CBC354C1-EBBC-42B1-B91E-7996777627AB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,10 +65,6 @@ Global
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CBC354C1-EBBC-42B1-B91E-7996777627AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CBC354C1-EBBC-42B1-B91E-7996777627AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CBC354C1-EBBC-42B1-B91E-7996777627AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CBC354C1-EBBC-42B1-B91E-7996777627AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,7 +79,6 @@ Global
 		{17E04EB7-4F1B-4C55-AEC2-6D3C9CBEBACB} = {2DE97E86-BE71-4399-AEB7-8FD7A57D7D7F}
 		{DA455C0E-3487-4A62-9B17-1AE491E4A79E} = {2DE97E86-BE71-4399-AEB7-8FD7A57D7D7F}
 		{E092CB29-D817-4A5B-863E-B2044257E911} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{CBC354C1-EBBC-42B1-B91E-7996777627AB} = {9901F886-3291-4DBE-B6F4-28A568533235}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {116563A0-C84C-440A-96FD-956841182A05}
